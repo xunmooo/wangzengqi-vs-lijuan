@@ -1,0 +1,23 @@
+# 原始抓取缓存与临时探测文件
+data/raw/_probe*
+data/raw/_curl*
+data/raw/_gh_*
+data/raw/_gitee_*
+data/raw/_reach*
+data/raw/_feizhaojun*
+data/raw/_somemany*
+data/raw/_tyb*
+data/raw/_wang_index*
+data/raw/_wang_test*
+data/raw/_li_99*
+data/raw/_essay*
+data/raw/*.html
+data/raw/*.json
+scripts/_probe*.py
+scripts/_gh_*.py
+scripts/_gitee_and_pdf.py
+scripts/_reach_test.py
+scripts/_fetch_feizhaojun.py
+scripts/__pycache__/
+*.pyc
+models/*.joblib

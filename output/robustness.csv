@@ -1,0 +1,4 @@
+﻿variant,accuracy,f1_macro
+baseline_char_tfidf,0.8981,0.8979
+masked_names,0.8981,0.898
+function_words_zscore,0.7454,0.7452

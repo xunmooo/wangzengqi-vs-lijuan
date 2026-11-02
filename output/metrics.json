@@ -1,0 +1,68 @@
+{
+  "primary_features": "char_tfidf",
+  "feature_selection": "5-fold CV on train only",
+  "cv": [
+    {
+      "features": "char_tfidf",
+      "cv_mean_accuracy": 0.9306,
+      "cv_std": 0.0172
+    },
+    {
+      "features": "word200",
+      "cv_mean_accuracy": 0.8659,
+      "cv_std": 0.0224
+    },
+    {
+      "features": "word_tfidf",
+      "cv_mean_accuracy": 0.9153,
+      "cv_std": 0.016
+    }
+  ],
+  "split": "by_work_8020_seed42",
+  "n_train": 850,
+  "n_test": 216,
+  "primary": {
+    "accuracy": 0.8981,
+    "precision_wang": 0.9388,
+    "recall_wang": 0.8519,
+    "f1_wang": 0.8932,
+    "precision_li": 0.8644,
+    "recall_li": 0.9444,
+    "f1_li": 0.9027,
+    "features": "char_tfidf"
+  },
+  "comparison": [
+    {
+      "accuracy": 0.8981,
+      "precision_wang": 0.9388,
+      "recall_wang": 0.8519,
+      "f1_wang": 0.8932,
+      "precision_li": 0.8644,
+      "recall_li": 0.9444,
+      "f1_li": 0.9027,
+      "features": "char_tfidf"
+    },
+    {
+      "accuracy": 0.8519,
+      "precision_wang": 0.8455,
+      "recall_wang": 0.8611,
+      "f1_wang": 0.8532,
+      "precision_li": 0.8585,
+      "recall_li": 0.8426,
+      "f1_li": 0.8505,
+      "features": "word200"
+    },
+    {
+      "accuracy": 0.9213,
+      "precision_wang": 0.9027,
+      "recall_wang": 0.9444,
+      "f1_wang": 0.9231,
+      "precision_li": 0.9417,
+      "recall_li": 0.8981,
+      "f1_li": 0.9194,
+      "features": "word_tfidf"
+    }
+  ],
+  "paragraph_split_accuracy": 0.9533,
+  "sklearn_version": "1.9.1"
+}
