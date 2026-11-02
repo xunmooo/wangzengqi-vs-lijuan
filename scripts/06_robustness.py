@@ -51,7 +51,8 @@ FUNC_WORDS = [
 
 
 def mask_names(texts: list) -> list:
-    """把人名等专名替换为 ◆（jieba 词性 nr=n人名, ns=地名, nt=机构名）。"""
+    """把人名/地名/机构名/其他专名替换为 ◆（jieba 词性标注）。
+    覆盖 nr*（含音译、复撮人名）、ns（地名）、nt（机构名）、nz（其他专名）。"""
     out = []
     cache = {}
     for t in texts:
@@ -61,7 +62,10 @@ def mask_names(texts: list) -> list:
         words = pseg.lcut(t)
         buf = []
         for w, flag in words:
-            buf.append(MASK if flag in ("nr", "ns", "nt") else w)
+            if flag in ("ns", "nt", "nz") or flag.startswith("nr"):
+                buf.append(MASK)
+            else:
+                buf.append(w)
         masked = "".join(buf)
         cache[t] = masked
         out.append(masked)

@@ -1,68 +1,72 @@
 {
   "primary_features": "char_tfidf",
-  "feature_selection": "5-fold CV on train only",
+  "feature_selection": "5-fold stratified GROUP CV on train only (grouped by work_id)",
   "cv": [
     {
       "features": "char_tfidf",
-      "cv_mean_accuracy": 0.9306,
-      "cv_std": 0.0172
+      "cv_mean_accuracy": 0.9198,
+      "cv_std": 0.0169
     },
     {
       "features": "word200",
-      "cv_mean_accuracy": 0.8659,
-      "cv_std": 0.0224
+      "cv_mean_accuracy": 0.8598,
+      "cv_std": 0.0237
     },
     {
       "features": "word_tfidf",
-      "cv_mean_accuracy": 0.9153,
-      "cv_std": 0.016
+      "cv_mean_accuracy": 0.9187,
+      "cv_std": 0.026
     }
   ],
-  "split": "by_work_8020_seed42",
-  "n_train": 850,
+  "split": "by_work_id_8020_seed42",
+  "n_train": 848,
   "n_test": 216,
   "primary": {
-    "accuracy": 0.8981,
-    "precision_wang": 0.9388,
+    "accuracy": 0.8935,
+    "precision_wang": 0.9293,
     "recall_wang": 0.8519,
-    "f1_wang": 0.8932,
-    "precision_li": 0.8644,
-    "recall_li": 0.9444,
-    "f1_li": 0.9027,
+    "f1_wang": 0.8889,
+    "precision_li": 0.8632,
+    "recall_li": 0.9352,
+    "f1_li": 0.8978,
     "features": "char_tfidf"
   },
   "comparison": [
     {
-      "accuracy": 0.8981,
-      "precision_wang": 0.9388,
+      "accuracy": 0.8935,
+      "precision_wang": 0.9293,
       "recall_wang": 0.8519,
-      "f1_wang": 0.8932,
-      "precision_li": 0.8644,
-      "recall_li": 0.9444,
-      "f1_li": 0.9027,
+      "f1_wang": 0.8889,
+      "precision_li": 0.8632,
+      "recall_li": 0.9352,
+      "f1_li": 0.8978,
       "features": "char_tfidf"
     },
     {
-      "accuracy": 0.8519,
-      "precision_wang": 0.8455,
-      "recall_wang": 0.8611,
-      "f1_wang": 0.8532,
-      "precision_li": 0.8585,
-      "recall_li": 0.8426,
-      "f1_li": 0.8505,
+      "accuracy": 0.838,
+      "precision_wang": 0.8349,
+      "recall_wang": 0.8426,
+      "f1_wang": 0.8387,
+      "precision_li": 0.8411,
+      "recall_li": 0.8333,
+      "f1_li": 0.8372,
       "features": "word200"
     },
     {
-      "accuracy": 0.9213,
-      "precision_wang": 0.9027,
-      "recall_wang": 0.9444,
-      "f1_wang": 0.9231,
-      "precision_li": 0.9417,
+      "accuracy": 0.9167,
+      "precision_wang": 0.9018,
+      "recall_wang": 0.9352,
+      "f1_wang": 0.9182,
+      "precision_li": 0.9327,
       "recall_li": 0.8981,
-      "f1_li": 0.9194,
+      "f1_li": 0.9151,
       "features": "word_tfidf"
     }
   ],
-  "paragraph_split_accuracy": 0.9533,
+  "paragraph_split_accuracy": 0.9531,
+  "work_level_accuracy": 0.9268,
+  "n_test_works": 41,
+  "errors_total": 23,
+  "errors_in_boundary_band": 23,
   "sklearn_version": "1.9.1"
 }

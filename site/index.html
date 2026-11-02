@@ -133,7 +133,8 @@ const el = (id) => document.getElementById(id);
         : a.majority_label==="汪曾祺"
           ? '<span class="tag wang">像汪曾祺</span>'
           : '<span class="tag err">恰在边界</span>';
-      return `<tr><td><b>${a.title}</b><br><span class="pct">${a.source||""}</span></td>
+      const src = (a.source||"").slice(0, 60);
+      return `<tr><td><b>${a.title}</b><br><span class="pct">${src}</span></td>
         <td><div class="bar-bg">
           <div class="bar-wang" style="width:${pct}%"></div>
           <div class="bar-li" style="width:${(100-pct).toFixed(1)}%"></div>

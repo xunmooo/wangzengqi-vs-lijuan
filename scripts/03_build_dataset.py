@@ -27,7 +27,6 @@
 
 import hashlib
 import json
-import random
 import re
 import sys
 from collections import Counter
@@ -129,7 +128,8 @@ def load_wang() -> list:
         work = stem.split("__", 1)[1] if "__" in stem else stem
         work = re.sub(r"^\d+_", "", work)
         for para in wang_json_to_paragraphs(path):
-            rows.append({"author": "汪曾祺", "work": work, "text": para,
+            rows.append({"author": "汪曾祺", "work": work, "work_id": stem,
+                         "text": para,
                          "source": "GitHub: fancyerii/wang 《汪曾祺全集》文字版"})
     return rows
 
@@ -168,8 +168,8 @@ def load_li() -> list:
             work = f"{book}·{work}"
         paras = [p.strip() for p in "\n".join(raw[body_start:]).split("\n\n") if p.strip()]
         for para in paras:
-            rows.append({"author": "李娟", "work": work, "text": para,
-                         "source": source})
+            rows.append({"author": "李娟", "work": work, "work_id": work,
+                         "text": para, "source": source})
     return rows
 
 
@@ -183,6 +183,9 @@ def clean_and_dedupe(rows: list) -> list:
         if chinese_ratio(text) < 0.6:
             continue
         if re.search(r"http|www\.|@|＠|#", text):
+            continue
+        # 网页文末的作者简介/编者按等样板文字
+        if re.match(r"^(作者|简介|出处|摘自|选自)[:：]", text):
             continue
         pieces = split_long(text)
         for piece in pieces:
@@ -209,19 +212,21 @@ def main() -> None:
     print(f"[cap40] {len(df)} paragraphs")
 
     # ---- 以「篇」为单位分层切分 80/20（随机种子 42）----
-    works = df[["author", "work"]].drop_duplicates().reset_index(drop=True)
+    # work_id 是切分键：汪曾祺用文件名（不同卷可能同名，如两版《复仇》），
+    # 李娟用篇名（同一篇的两个转载源合并为一篇）
+    works = df[["author", "work_id"]].drop_duplicates().reset_index(drop=True)
     tr_works, te_works = train_test_split(
         works, test_size=0.2, stratify=works["author"], random_state=SEED,
     )
-    tr_keys = set(map(tuple, tr_works[["author", "work"]].values))
-    te_keys = set(map(tuple, te_works[["author", "work"]].values))
+    tr_keys = set(tr_works["work_id"])
+    te_keys = set(te_works["work_id"])
 
-    df["split"] = df.apply(
-        lambda r: "train" if (r["author"], r["work"]) in tr_keys
-        else ("test" if (r["author"], r["work"]) in te_keys else "?"),
-        axis=1,
-    )
-    assert (df["split"] != "?").all(), "有段落既不在训练集也不在测试集"
+    df["split"] = df["work_id"].map(
+        lambda k: "train" if k in tr_keys else "test").astype(str)
+    assert (df["split"] == "test").sum() > 0 and (df["split"] == "train").sum() > 0
+    n_tr_w = df[df["split"] == "train"]["work_id"].nunique()
+    n_te_w = df[df["split"] == "test"]["work_id"].nunique()
+    print(f"[split by work] {n_tr_w} works -> train, {n_te_w} works -> test")
 
     # ---- 类别平衡：对多数类（汪曾祺）下采样，使两类样本数相同 ----
     # 在 train / test 内部各自平衡，保持 80/20 的总体比例

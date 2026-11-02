@@ -1,5 +1,5 @@
 ﻿file,title,source,n_paragraphs,mean_p_lijuan,majority_label,share_pred_lijuan
-ai_pastiche_li.txt,冬窝子的一盏灯（AI 模仿李娟文风）,"AI 生成的文风模仿测试文本（并非任何真实作家的作品），用于检验分类器对""AI 模仿文风""的反应。生成提示词要求模仿李娟《冬牧场》时期的题材与语言习惯。",6,0.6883,李娟,1.0
-ai_pastiche_wang.txt,立夏吃蛋（AI 模仿汪曾祺文风）,"AI 生成的文风模仿测试文本（并非任何真实作家的作品），用于检验分类器对""AI 模仿文风""的反应。生成提示词要求模仿汪曾祺晚期散文的题材与语言习惯。",4,0.5016,边界,0.25
-liu_liangcheng_xutushi.txt,把时间绊了一跤（《虚土》节选）,刘亮程，人民文学出版社官方湃客号，https://m.thepaper.cn/baijiahao_20513348,10,0.6994,李娟,1.0
-shi_tiesheng_diyutan.txt,我与地坛（节选）,史铁生《我与地坛》，人民日报客户端「夜话」栏目转载，https://www.peopleapp.com/rmharticle/30016937520,7,0.5777,李娟,0.857
+ai_pastiche_li.txt,冬窝子的一盏灯（AI 模仿李娟文风）,"AI 生成的文风模仿测试文本（并非任何真实作家的作品），用于检验分类器对""AI 模仿文风""的反应。生成提示词要求模仿李娟《冬牧场》时期的题材与语言习惯。",6,0.6896,李娟,1.0
+ai_pastiche_wang.txt,立夏吃蛋（AI 模仿汪曾祺文风）,"AI 生成的文风模仿测试文本（并非任何真实作家的作品），用于检验分类器对""AI 模仿文风""的反应。生成提示词要求模仿汪曾祺晚期散文的题材与语言习惯。",4,0.5047,边界,0.25
+liu_liangcheng_xutushi.txt,把时间绊了一跤（《虚土》节选）,刘亮程，人民文学出版社官方湃客号，https://m.thepaper.cn/baijiahao_20513348,10,0.7015,李娟,1.0
+shi_tiesheng_diyutan.txt,我与地坛（节选）,史铁生《我与地坛》，人民日报客户端「夜话」栏目转载，https://www.peopleapp.com/rmharticle/30016937520,7,0.5801,李娟,0.857

@@ -1,4 +1,4 @@
 ﻿features,cv_mean_accuracy,cv_std
-char_tfidf,0.9306,0.0172
-word200,0.8659,0.0224
-word_tfidf,0.9153,0.016
+char_tfidf,0.9198,0.0169
+word200,0.8598,0.0237
+word_tfidf,0.9187,0.026

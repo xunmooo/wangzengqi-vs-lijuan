@@ -17,7 +17,12 @@ import re
 from pathlib import Path
 
 import joblib
+import matplotlib
+import matplotlib.pyplot as plt
 import pandas as pd
+
+matplotlib.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei"]
+matplotlib.rcParams["axes.unicode_minus"] = False
 
 PROJECT = Path(__file__).resolve().parent.parent
 TEXT_DIR = PROJECT / "analysis_text"
@@ -88,6 +93,35 @@ def main() -> None:
     pd.DataFrame(summary).to_csv(
         OUT.parent / "analysis_summary.csv", index=False, encoding="utf-8-sig")
     print(f"[done] {OUT}")
+
+    # ---- 图 5：文风光谱（逐段 P(李娟) 轨迹）----
+    df_rows = pd.DataFrame(rows)
+    n = len(summary)
+    ncols = 2
+    nrows = (n + 1) // 2
+    fig, axes = plt.subplots(nrows, ncols, figsize=(7.2, 3.1 * nrows), dpi=150,
+                             squeeze=False)
+    for ax, s in zip(axes.flat, summary):
+        sub = df_rows[df_rows["file"] == s["file"]]
+        ax.plot(range(1, len(sub) + 1), sub["p_lijuan"], "o-", ms=3.5,
+                lw=1.1, color="#8a6d1a")
+        ax.axhline(0.5, color="#999", lw=0.8, ls="--")
+        ax.axhspan(0.45, 0.55, color="#f4d35e", alpha=0.2)
+        ax.set_ylim(0, 1)
+        ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0],
+                      ["0", ".25", ".5", ".75", "1"])
+        ax.set_xticks(range(1, len(sub) + 1))
+        ax.set_title(f"{s['title']}（均值 {s['mean_p_lijuan']:.2f}）",
+                     fontsize=10)
+        ax.set_xlabel("段落序号", fontsize=8.5)
+        ax.set_ylabel("P(李娟)", fontsize=8.5)
+        ax.tick_params(labelsize=8)
+    for ax in axes.flat[len(summary):]:
+        ax.axis("off")
+    fig.suptitle("应用文本的逐段「文风坐标」（0=汪曾祺，1=李娟）", fontsize=12)
+    fig.tight_layout(rect=(0, 0, 1, 0.96))
+    fig.savefig(OUT.parent / "analysis_spectrum.png")
+    print("[fig] output/analysis_spectrum.png")
 
 
 if __name__ == "__main__":

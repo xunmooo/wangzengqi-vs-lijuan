@@ -32,7 +32,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (accuracy_score, classification_report,
                              confusion_matrix, f1_score, precision_score,
                              recall_score)
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import StratifiedGroupKFold
 from sklearn.pipeline import make_pipeline
 
 matplotlib.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei"]
@@ -100,17 +100,28 @@ def main() -> None:
     X_train, y_train = train["text"].tolist(), train["author"].tolist()
     X_test, y_test = test["text"].tolist(), test["author"].tolist()
 
-    # ---- 特征选择：仅在训练集上做 5 折交叉验证（不接触测试集）----
+    # ---- 特征选择：训练集内部 5 折交叉验证，且按「篇」分组折叠 ----
+    # 与按篇切分保持同一标准：同一篇的段落不能同时出现在 CV 的训练折与
+    # 验证折里（否则 CV 分数会因同篇泄漏而偏乐观）。
+    g_train = train["work_id"].tolist()
+    sgk = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=SEED)
     cv_rows = []
     for kind in ["char_tfidf", "word200", "word_tfidf"]:
         pipe = make_pipeline(make_features(kind),
                              LogisticRegression(max_iter=2000, C=1.0,
                                                 random_state=SEED))
-        scores = cross_val_score(pipe, X_train, y_train, cv=5, n_jobs=-1)
+        scores = []
+        for tr_idx, va_idx in sgk.split(X_train, y_train, groups=g_train):
+            tr_txt = [X_train[i] for i in tr_idx]
+            va_txt = [X_train[i] for i in va_idx]
+            pipe.fit(tr_txt, [y_train[i] for i in tr_idx])
+            scores.append(accuracy_score([y_train[i] for i in va_idx],
+                                         pipe.predict(va_txt)))
         cv_rows.append({"features": kind,
-                        "cv_mean_accuracy": round(float(scores.mean()), 4),
-                        "cv_std": round(float(scores.std()), 4)})
-        print(f"[cv] {kind:<12} {scores.mean():.4f} ± {scores.std():.4f}")
+                        "cv_mean_accuracy": round(float(sum(scores) / len(scores)), 4),
+                        "cv_std": round(float(pd.Series(scores).std()), 4)})
+        print(f"[cv-grouped] {kind:<12} {cv_rows[-1]['cv_mean_accuracy']:.4f} "
+              f"± {cv_rows[-1]['cv_std']:.4f}")
     pd.DataFrame(cv_rows).to_csv(OUT / "feature_cv.csv", index=False,
                                  encoding="utf-8-sig")
     best_kind = max(cv_rows, key=lambda r: r["cv_mean_accuracy"])["features"]
@@ -171,6 +182,25 @@ def main() -> None:
     test_pred[test_pred["correct"] == 0].to_csv(
         OUT / "misclassified.csv", index=False, encoding="utf-8-sig")
 
+    # ---- 文章级评估：每篇内部多数投票 ----
+    # 段落级判对不等于读者拿到的结论判对；把段落投票回「篇」再算一次
+    work_votes = (test_pred.groupby(["author", "work_id", "work"])["pred"]
+                  .agg(lambda s: s.value_counts().idxmax())
+                  .reset_index(name="vote"))
+    work_acc = float((work_votes["vote"] == work_votes["author"]).mean())
+    work_votes["correct"] = (work_votes["vote"] == work_votes["author"]).astype(int)
+    work_votes.to_csv(OUT / "work_level_votes.csv", index=False, encoding="utf-8-sig")
+    print(f"[work-level] {len(work_votes)} test works, "
+          f"majority-vote accuracy={work_acc:.4f}")
+
+    # 错误按篇汇总：哪些作品贡献了最多错误
+    err_by_work = (test_pred[test_pred["correct"] == 0]
+                   .groupby(["author", "work"])["text"].size()
+                   .reset_index(name="n_errors")
+                   .sort_values(["author", "n_errors"], ascending=[True, False]))
+    err_by_work.to_csv(OUT / "misclassified_by_work.csv", index=False,
+                       encoding="utf-8-sig")
+
     # ---- 对照：按段落随机切分（同篇泄漏版本）----
     tr = passages[passages["split_para"] == "train"]
     te = passages[passages["split_para"] == "test"]
@@ -193,19 +223,86 @@ def main() -> None:
     top["pushes_toward"] = (top["coef"] > 0).map({True: "李娟", False: "汪曾祺"})
     top.to_csv(OUT / "top_features.csv", index=False, encoding="utf-8-sig")
 
+    # ---- 图 2：三种特征的 CV / 测试集准确率对比 ----
+    import numpy as np
+    kinds = [r["features"] for r in cv_rows]
+    cv_mean = [r["cv_mean_accuracy"] for r in cv_rows]
+    cv_std = [r["cv_std"] for r in cv_rows]
+    test_acc = [next(c["accuracy"] for c in comparison if c["features"] == k)
+                for k in kinds]
+    x = np.arange(len(kinds))
+    fig, ax = plt.subplots(figsize=(6.4, 3.8), dpi=150)
+    ax.bar(x - 0.18, cv_mean, 0.34, yerr=cv_std, capsize=3,
+           label="训练集分组 CV", color="#6b7d5a")
+    ax.bar(x + 0.18, test_acc, 0.34, label="测试集", color="#b0653f")
+    ax.set_xticks(x, ["字符TF-IDF\n(主方案)", "最高频200词", "词级TF-IDF"])
+    ax.set_ylim(0.5, 1.02)
+    ax.axhline(0.5, color="#999", lw=0.8, ls="--")
+    ax.text(0.02, 0.505, "随机基线 50%", fontsize=8, color="#999",
+            ha="left", transform=ax.get_yaxis_transform())
+    for xi, v, s in zip(x - 0.18, cv_mean, cv_std):
+        ax.text(xi, v + s + 0.012, f"{v:.1%}", ha="center", fontsize=8.5)
+    for xi, v in zip(x + 0.18, test_acc):
+        ax.text(xi, v + 0.012, f"{v:.1%}", ha="center", fontsize=8.5)
+    ax.set_ylabel("准确率")
+    ax.set_title("特征方案对比：交叉验证与测试集", loc="left")
+    ax.legend(loc="lower right", bbox_to_anchor=(1.0, 1.005), ncol=2,
+              fontsize=9, frameon=False)
+    fig.tight_layout()
+    fig.savefig(OUT / "feature_comparison.png")
+
+    # ---- 图 3：置信度分布（含全部错误的边界带）----
+    fig, ax = plt.subplots(figsize=(6.4, 3.8), dpi=150)
+    ok = test_pred[test_pred["correct"] == 1]["p_lijuan"]
+    bad = test_pred[test_pred["correct"] == 0]["p_lijuan"]
+    bins = np.linspace(0, 1, 25)
+    ax.hist(ok, bins=bins, color="#9db28a", alpha=0.85,
+            label=f"判对 ({len(ok)} 段)")
+    ax.hist(bad, bins=bins, color="#c94f4f", alpha=0.9,
+            label=f"误判 ({len(bad)} 段)")
+    ax.axvline(0.5, color="#666", lw=1)
+    ax.axvspan(0.35, 0.65, color="#f4d35e", alpha=0.25)
+    ax.text(0.5, ax.get_ylim()[1] * 0.95, "边界带 |P−0.5|<0.15",
+            ha="center", fontsize=9, color="#8a6d1a")
+    ax.set_xlabel("P(李娟)")
+    ax.set_ylabel("段落数")
+    ax.set_title("测试集置信度分布：所有误判都落在边界带")
+    ax.legend(fontsize=9)
+    fig.tight_layout()
+    fig.savefig(OUT / "confidence_histogram.png")
+
+    # ---- 图 4：最有区分力的特征（发散条形图）----
+    sel = pd.concat([top[top["pushes_toward"] == "李娟"].tail(12),
+                     top[top["pushes_toward"] == "汪曾祺"].head(12)])
+    sel = sel.sort_values("coef")
+    colors = ["#b0653f" if v > 0 else "#6b7d5a" for v in sel["coef"]]
+    fig, ax = plt.subplots(figsize=(6.8, 5.6), dpi=150)
+    ax.barh(range(len(sel)), sel["coef"], color=colors)
+    ax.set_yticks(range(len(sel)), sel["feature"], fontsize=9)
+    ax.axvline(0, color="#666", lw=0.8)
+    ax.set_xlabel("逻辑回归系数（>0 推向李娟，<0 推向汪曾祺）")
+    ax.set_title("区分两位作家最有力的特征（字符 n-gram）")
+    fig.tight_layout()
+    fig.savefig(OUT / "top_features.png")
+
     # ---- 模型与汇总保存 ----
     joblib.dump({"vectorizer": vec, "classifier": clf, "classes": classes},
                 MODELS / "model_char_tfidf.joblib")
 
     metrics = {
         "primary_features": best_kind,
-        "feature_selection": "5-fold CV on train only",
+        "feature_selection": "5-fold stratified GROUP CV on train only (grouped by work_id)",
         "cv": cv_rows,
-        "split": "by_work_8020_seed42",
+        "split": "by_work_id_8020_seed42",
         "n_train": len(train), "n_test": len(test),
         "primary": next(c for c in comparison if c["features"] == best_kind),
         "comparison": comparison,
         "paragraph_split_accuracy": round(leak_acc, 4),
+        "work_level_accuracy": round(work_acc, 4),
+        "n_test_works": int(len(work_votes)),
+        "errors_total": int(len(test_pred[test_pred["correct"] == 0])),
+        "errors_in_boundary_band": int(
+            test_pred[test_pred["correct"] == 0]["p_lijuan"].between(0.35, 0.65).sum()),
         "sklearn_version": sklearn.__version__,
     }
     (OUT / "metrics.json").write_text(
