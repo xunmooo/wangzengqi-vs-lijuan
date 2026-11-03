@@ -1,0 +1,65 @@
+{
+  "汪曾祺": {
+    "works": 196,
+    "paragraphs": 2810,
+    "chars": 440103,
+    "avg_len": 156.6,
+    "median_len": 120.0,
+    "wang_books": {
+      "book4": 1258,
+      "book5": 1552
+    },
+    "sources": [
+      [
+        "《汪曾祺全集》文字版（GitHub）",
+        2810
+      ]
+    ]
+  },
+  "李娟": {
+    "works": 25,
+    "paragraphs": 532,
+    "chars": 49458,
+    "avg_len": 93.0,
+    "median_len": 68.5,
+    "wang_books": null,
+    "sources": [
+      [
+        "chuangshi.qq.com",
+        258
+      ],
+      [
+        "sohu.com",
+        67
+      ],
+      [
+        "m.thepaper.cn",
+        51
+      ],
+      [
+        "thepaper.cn",
+        37
+      ],
+      [
+        "epaper.gmw.cn",
+        36
+      ],
+      [
+        "sanw.net",
+        26
+      ],
+      [
+        "china.com.cn",
+        24
+      ],
+      [
+        "chinawriter.com.cn",
+        22
+      ],
+      [
+        "paper.people.com.cn",
+        11
+      ]
+    ]
+  }
+}

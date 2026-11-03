@@ -29,6 +29,7 @@ import hashlib
 import json
 import re
 import sys
+import urllib.parse
 from collections import Counter
 from pathlib import Path
 
@@ -210,6 +211,37 @@ def main() -> None:
     df["seq"] = df.groupby(["author", "work"]).cumcount()
     df = df[df["seq"] < 40].drop(columns=["seq"]).reset_index(drop=True)
     print(f"[cap40] {len(df)} paragraphs")
+    df_full = df.copy()          # 平衡前的完整语料（供统计用）
+
+    # ---- 语料统计（README / 互动页面使用）----
+    def source_domain(url: str) -> str:
+        if "汪曾祺全集" in url:
+            return "《汪曾祺全集》文字版（GitHub）"
+        try:
+            netloc = urllib.parse.urlparse(url).netloc.replace("www.", "")
+            return netloc if netloc else "未知来源"
+        except Exception:                     # noqa: BLE001
+            return "未知来源"
+
+    stats = {}
+    for au in ("汪曾祺", "李娟"):
+        sub = df_full[df_full["author"] == au]
+        lens = sub["text"].str.len()
+        books = Counter(w.split("__", 1)[0] for w in sub["work_id"]
+                        if w.startswith("book"))
+        hosts = Counter(source_domain(u) for u in sub["source"])
+        stats[au] = {
+            "works": int(sub["work_id"].nunique()),
+            "paragraphs": int(len(sub)),
+            "chars": int(lens.sum()),
+            "avg_len": round(float(lens.mean()), 1),
+            "median_len": round(float(lens.median()), 1),
+            "wang_books": dict(books) if books else None,
+            "sources": hosts.most_common(10),
+        }
+    (PROJECT / "data" / "corpus_stats.json").write_text(
+        json.dumps(stats, ensure_ascii=False, indent=2), encoding="utf-8")
+    print("[stats] data/corpus_stats.json")
 
     # ---- 以「篇」为单位分层切分 80/20（随机种子 42）----
     # work_id 是切分键：汪曾祺用文件名（不同卷可能同名，如两版《复仇》），
