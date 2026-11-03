@@ -1,0 +1,26 @@
+{
+    // 按 F5 调试当前打开的脚本；或选用预设入口
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: 当前文件",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {"PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8"},
+            "justMyCode": false
+        },
+        {
+            "name": "Python: 训练与评估 (04)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "scripts/04_train_evaluate.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {"PYTHONUTF8": "1"},
+            "justMyCode": false
+        }
+    ]
+}

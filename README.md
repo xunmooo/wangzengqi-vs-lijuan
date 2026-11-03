@@ -76,6 +76,14 @@ python scripts/07_build_site.py              # 生成 GitHub Pages 数据
 python scripts/08_make_report_pdf.py         # report.md → report.pdf（写作完成后）
 ```
 
+### 在 VS Code 中运行
+
+用 VS Code 打开本文件夹（仓库含 `.vscode/` 配置）：
+
+- **菜单「终端 → 运行任务」**：流水线每一步都已注册为任务（03→08 亦可一键顺序重跑）；
+- **按 F5**：调试当前打开的脚本（已配置 UTF-8 环境，中文输出不乱码）；
+- 推荐扩展（打开项目时会自动提示安装）：Python、Python Debugger。
+
 ## 方法概要
 
 - **切分**：80/20，按「篇」分层切分（`train_test_split(..., stratify=作者,

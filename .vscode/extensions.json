@@ -1,0 +1,8 @@
+{
+    // 打开本项目时，VS Code 会弹出「是否安装推荐的扩展」
+    "recommendations": [
+        "ms-python.python",
+        "ms-python.debugpy",
+        "eamodio.gitlens"
+    ]
+}

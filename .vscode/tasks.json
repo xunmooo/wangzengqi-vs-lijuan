@@ -1,0 +1,99 @@
+{
+    // 任务面板：菜单「终端(T) → 运行任务(R)」即可选择执行
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "01 下载汪曾祺全集（缓存后秒完）",
+            "type": "shell",
+            "command": "python",
+            "args": ["scripts/01_download_wangzengqi.py"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "problemMatcher": []
+        },
+        {
+            "label": "02 采集李娟语料（搜索+QQ阅读）",
+            "type": "shell",
+            "command": "python",
+            "args": ["scripts/02_collect_lijuan.py"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "problemMatcher": []
+        },
+        {
+            "label": "02c 李娟三部散文集（QQ阅读）",
+            "type": "shell",
+            "command": "python",
+            "args": ["scripts/02c_collect_lijuan_qqread.py"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "problemMatcher": []
+        },
+        {
+            "label": "02d 李娟名篇（官方媒体）",
+            "type": "shell",
+            "command": "python",
+            "args": ["scripts/02d_collect_lijuan_official.py"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "problemMatcher": []
+        },
+        {
+            "label": "03 构建数据集（清洗/切分/平衡）",
+            "type": "shell",
+            "command": "python",
+            "args": ["scripts/03_build_dataset.py"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "problemMatcher": []
+        },
+        {
+            "label": "04 训练与评估（出全部图表）",
+            "type": "shell",
+            "command": "python",
+            "args": ["scripts/04_train_evaluate.py"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "problemMatcher": []
+        },
+        {
+            "label": "05 应用到新文本",
+            "type": "shell",
+            "command": "python",
+            "args": ["scripts/05_apply_model.py"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "problemMatcher": []
+        },
+        {
+            "label": "06 稳健性检验（专名遮蔽/虚词）",
+            "type": "shell",
+            "command": "python",
+            "args": ["scripts/06_robustness.py"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "problemMatcher": []
+        },
+        {
+            "label": "07 重建互动页面数据",
+            "type": "shell",
+            "command": "python",
+            "args": ["scripts/07_build_site.py"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "problemMatcher": []
+        },
+        {
+            "label": "08 生成报告 PDF",
+            "type": "shell",
+            "command": "python",
+            "args": ["scripts/08_make_report_pdf.py"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "problemMatcher": []
+        },
+        {
+            "label": "★ 全流程重跑（03→08）",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "03 构建数据集（清洗/切分/平衡）",
+                "04 训练与评估（出全部图表）",
+                "06 稳健性检验（专名遮蔽/虚词）",
+                "05 应用到新文本",
+                "07 重建互动页面数据",
+                "08 生成报告 PDF"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}

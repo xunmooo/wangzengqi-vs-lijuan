@@ -1,0 +1,22 @@
+{
+    // 终端强制 UTF-8：让脚本的中文输出不再乱码
+    "terminal.integrated.env.windows": {
+        "PYTHONUTF8": "1",
+        "PYTHONIOENCODING": "utf-8"
+    },
+    // 文件一律按 UTF-8 读写
+    "files.encoding": "utf8",
+    // 本项目的 Python 解释器（机器上唯一安装的那个）
+    "python.defaultInterpreterPath": "python",
+    "python.terminal.activateEnvironment": false,
+    // 编辑体验
+    "editor.formatOnSave": false,
+    "files.autoSave": "off",
+    "explorer.sortOrder": "type",
+    // 搜索时忽略体积较大的数据文件
+    "search.exclude": {
+        "data/raw/wang/**": true,
+        "data/raw/li/**": true,
+        "*.joblib": true
+    }
+}
