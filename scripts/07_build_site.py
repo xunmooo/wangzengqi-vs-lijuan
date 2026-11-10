@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """
 07_build_site.py —— 把项目各处结果汇总成 site/data.js（GitHub Pages 数据）
 
@@ -17,7 +17,7 @@ import pandas as pd
 PROJECT = Path(__file__).resolve().parent.parent
 OUT = PROJECT / "output"
 DATA = PROJECT / "data"
-SITE = PROJECT / "site"
+SITE = PROJECT / "docs"
 
 
 def main() -> None:
@@ -95,3 +95,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
