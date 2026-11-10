@@ -83,6 +83,14 @@
             "problemMatcher": []
         },
         {
+            "label": "09 统计检验（群集置信区间）",
+            "type": "shell",
+            "command": "python",
+            "args": ["scripts/09_statistical_checks.py"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "problemMatcher": []
+        },
+        {
             "label": "★ 全流程重跑（03→08）",
             "dependsOrder": "sequence",
             "dependsOn": [

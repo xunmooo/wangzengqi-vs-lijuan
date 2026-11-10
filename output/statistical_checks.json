@@ -1,0 +1,78 @@
+{
+  "bootstrap": {
+    "n_resamples": 10000,
+    "unit": "work_id, stratified by author",
+    "metric": "mean of per-author paragraph accuracy",
+    "ci95": [
+      0.8225,
+      0.9483
+    ]
+  },
+  "seed_stability": {
+    "results": [
+      {
+        "seed": 42,
+        "accuracy": 0.8935,
+        "n_train": 848,
+        "n_test": 216
+      },
+      {
+        "seed": 1,
+        "accuracy": 0.9266,
+        "n_train": 778,
+        "n_test": 286
+      },
+      {
+        "seed": 2,
+        "accuracy": 0.9217,
+        "n_train": 898,
+        "n_test": 166
+      },
+      {
+        "seed": 3,
+        "accuracy": 0.9112,
+        "n_train": 850,
+        "n_test": 214
+      },
+      {
+        "seed": 4,
+        "accuracy": 0.9712,
+        "n_train": 786,
+        "n_test": 278
+      }
+    ],
+    "mean": 0.9248,
+    "std": 0.0258,
+    "min": 0.8935,
+    "max": 0.9712
+  },
+  "mcnemar": {
+    "only_char_correct": 10,
+    "only_word_correct": 15,
+    "chi2": 0.64,
+    "p_value": 0.4237,
+    "significant_0.05": false
+  },
+  "learning_curve": [
+    {
+      "frac": 0.25,
+      "n_train": 212,
+      "accuracy": 0.8565
+    },
+    {
+      "frac": 0.5,
+      "n_train": 424,
+      "accuracy": 0.8704
+    },
+    {
+      "frac": 0.75,
+      "n_train": 636,
+      "accuracy": 0.8611
+    },
+    {
+      "frac": 1.0,
+      "n_train": 848,
+      "accuracy": 0.8935
+    }
+  ]
+}

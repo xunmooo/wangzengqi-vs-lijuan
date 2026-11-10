@@ -113,12 +113,12 @@ def main() -> None:
         ax.set_xticks(range(1, len(sub) + 1))
         ax.set_title(f"{s['title']}（均值 {s['mean_p_lijuan']:.2f}）",
                      fontsize=10)
-        ax.set_xlabel("段落序号", fontsize=8.5)
+        ax.set_xlabel("段落序號", fontsize=8.5)
         ax.set_ylabel("P(李娟)", fontsize=8.5)
         ax.tick_params(labelsize=8)
     for ax in axes.flat[len(summary):]:
         ax.axis("off")
-    fig.suptitle("应用文本的逐段「文风坐标」（0=汪曾祺，1=李娟）", fontsize=12)
+    fig.suptitle("應用文本的逐段「文風坐標」（0＝汪曾祺，1＝李娟）", fontsize=12)
     fig.tight_layout(rect=(0, 0, 1, 0.96))
     fig.savefig(OUT.parent / "analysis_spectrum.png")
     print("[fig] output/analysis_spectrum.png")

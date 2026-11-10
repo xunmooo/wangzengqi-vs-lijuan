@@ -89,6 +89,8 @@
 
   table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
   th, td { padding: 8px 12px; border-bottom: 1px solid var(--line); text-align: left; }
+  td { overflow-wrap: anywhere; }
+  #cleanTable, #aboutTable { table-layout: fixed; }
   th { color: var(--soft); font-weight: 600; font-size: 12.5px; white-space: nowrap; }
   tr:last-child td { border-bottom: none; }
 
@@ -206,6 +208,164 @@
     color: var(--soft); font-size: 12.5px; line-height: 2;
   }
   a { color: #7a671e; }
+
+  /* Quiet editorial styling: keep the literary warmth, improve scanning. */
+  :root {
+    --paper: #f1f4ef;
+    --card: #fffefa;
+    --ink: #26332e;
+    --soft: #6f7e76;
+    --line: #d9e1d9;
+    --wang: #527362;
+    --wangbg: #e7f0e9;
+    --li: #bd684d;
+    --libg: #f8ebe5;
+    --bad: #b94f4b;
+    --gold: #d7ad52;
+    --goldbg: #fbf4df;
+  }
+  html { scroll-padding-top: 76px; }
+  body {
+    background:
+      linear-gradient(90deg, transparent 0 49.9%, rgba(82,115,98,.035) 50%, transparent 50.1%),
+      radial-gradient(ellipse at 82% 0%, rgba(215,173,82,.12), transparent 34rem),
+      var(--paper);
+    line-height: 1.78;
+  }
+  nav {
+    background: rgba(247,249,245,.94);
+    border-bottom-color: #d5ded6;
+    box-shadow: 0 4px 18px rgba(38,51,46,.045);
+  }
+  nav .brand { white-space: nowrap; letter-spacing: 0; }
+  nav .pill { background: var(--wang); border-radius: 3px; white-space: nowrap; }
+  nav a { border-radius: 3px; transition: background .2s ease, color .2s ease; }
+  nav a:hover, nav a:focus-visible { background: #e6eee8; color: var(--ink); }
+  nav a[aria-current="location"] { color: var(--ink); background: #e6eee8; box-shadow: inset 0 -2px var(--wang); }
+  .wrap { max-width: 1160px; padding-top: 42px; }
+  .hero {
+    position: relative;
+    padding: 30px 0 26px 26px;
+    border-left: 3px solid var(--wang);
+    border-bottom: 1px solid var(--line);
+  }
+  .kicker { letter-spacing: 1.4px; color: #718276; }
+  h1.title { font-size: 42px; line-height: 1.24; letter-spacing: 0; }
+  h1.title .vs { color: var(--li); font-size: 22px; }
+  .subtitle { max-width: 56em; color: #52635a; }
+  .hero-stats { gap: 0; margin: 28px 0 0; border-top: 1px solid var(--line); }
+  .stat {
+    flex: 1 1 160px;
+    min-width: 0;
+    padding: 16px 18px 8px;
+    background: transparent;
+    border: 0;
+    border-right: 1px solid var(--line);
+    border-radius: 0;
+    box-shadow: none;
+    text-decoration: none;
+    transition: background .18s ease;
+  }
+  .stat:last-child { border-right: 0; }
+  a.stat:hover, a.stat:focus-visible { background: rgba(255,254,250,.72); }
+  .stat .num { font-size: 27px; letter-spacing: 0; }
+  .stat .lab { color: var(--soft); }
+  .stat .lab small { display: block; margin-top: 2px; font-size: 11px; color: var(--soft); }
+  section { margin-top: 48px; }
+  .sec-head { gap: 12px; margin-bottom: 8px; }
+  .sec-no { font-family: Georgia,serif; font-size: 34px; -webkit-text-stroke-color: #93a99a; }
+  .sec-head h2 { font-size: 21px; letter-spacing: 0; }
+  .sec-intro { margin-left: 48px; color: #718078; }
+  .card {
+    background: rgba(255,254,250,.88);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    padding: 22px 24px;
+    box-shadow: 0 6px 20px rgba(38,51,46,.035);
+  }
+  .card h3 { letter-spacing: 0; }
+  .takeaway {
+    border: 0;
+    border-left: 3px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+    background: #faf4e5;
+    color: #655b3c;
+  }
+  .author-card { border-radius: 6px; }
+  .author-card.wang { background: linear-gradient(145deg,#e8f0e9,#fffefa 75%); }
+  .author-card.li { background: linear-gradient(145deg,#f8ebe5,#fffefa 75%); }
+  .author-card .who b { letter-spacing: 0; }
+  .chip, .tag { border-radius: 3px; }
+  .step { border-radius: 5px; background: rgba(255,254,250,.84); }
+  .spec-card { border-radius: 6px; border-color: var(--line); }
+  .cm td.cell { border-radius: 4px; }
+  .toolbar { align-items: center; }
+  .toolbar input, .toolbar select {
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 1px solid #cbd7ce;
+    border-radius: 4px;
+    color: var(--ink);
+    background: #fffefa;
+    font: inherit;
+    font-size: 13px;
+  }
+  .toolbar input { flex: 1 1 240px; outline: none; }
+  .toolbar input:focus, .toolbar select:focus { border-color: var(--wang); box-shadow: 0 0 0 3px rgba(82,115,98,.12); }
+  .fbtn, .more-btn {
+    min-height: 38px;
+    padding: 7px 12px;
+    border-radius: 4px;
+    transition: background .18s ease, border-color .18s ease, color .18s ease;
+  }
+  .fbtn.active { background: var(--wang); border-color: var(--wang); }
+  .browse { min-width: 720px; }
+  .browse th { position: sticky; top: var(--nav-h); z-index: 2; background: #f1f5f0; }
+  .browse tr.row:hover td { background: #f4f7ed; }
+  .browse tr.row:focus-visible td { outline: 2px solid var(--wang); outline-offset: -2px; }
+  .table-scroll { overflow-x: auto; border-top: 1px solid var(--line); }
+  .detail { background: #f2f5ef; border-radius: 4px; border-style: solid; }
+  .browse-meta { color: var(--soft); font-size: 12px; margin: 0 0 10px; }
+  button, a, input, select { -webkit-tap-highlight-color: transparent; }
+  button:focus-visible, a:focus-visible, select:focus-visible { outline: 2px solid var(--wang); outline-offset: 2px; }
+  .stat, .card, .author-card, .step { animation: rise-in .55s both; }
+  .hero-stats .stat:nth-child(2) { animation-delay: .06s; }
+  .hero-stats .stat:nth-child(3) { animation-delay: .12s; }
+  .hero-stats .stat:nth-child(4) { animation-delay: .18s; }
+  @keyframes rise-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 760px) {
+    :root { --nav-h: 52px; }
+    nav { gap: 2px; padding: 0 10px; overflow-x: auto; scrollbar-width: none; }
+    nav::-webkit-scrollbar { display: none; }
+    nav .brand { margin-right: 6px; font-size: 13px; }
+    nav .brand small, nav .spacer, nav .pill { display: none; }
+    nav a { flex: 0 0 auto; padding: 7px 8px; font-size: 12px; }
+    .wrap { padding: 24px 16px 56px; }
+    .hero { padding: 18px 0 18px 16px; }
+    h1.title { font-size: 32px; }
+    .subtitle { font-size: 14px; }
+    .hero-stats { display: grid; grid-template-columns: 1fr 1fr; }
+    .stat { border-bottom: 1px solid var(--line); padding: 12px 10px 10px; }
+    .stat:nth-child(2) { border-right: 0; }
+    .stat:nth-child(3), .stat:nth-child(4) { border-bottom: 0; }
+    .stat .num { font-size: 23px; }
+    section { margin-top: 38px; }
+    .sec-no { font-size: 28px; }
+    .sec-head h2 { font-size: 18px; }
+    .sec-intro { margin-left: 40px; font-size: 12.5px; }
+    .card { padding: 17px 15px; }
+    .authors { gap: 12px; }
+    .author-card { padding: 17px; }
+    .mini { gap: 16px; }
+    .exp { grid-template-columns: minmax(0,1fr) 64px; gap: 8px; }
+    .exp .why { grid-column: 1 / -1; }
+    .toolbar input { flex-basis: 100%; }
+    .toolbar select { flex: 1 1 100%; }
+    .fbtn { flex: 1 1 auto; padding-inline: 8px; font-size: 11.5px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
 </style>
 </head>
 <body>
@@ -270,7 +430,7 @@
 
   <!-- ================= 三、结果 ================= -->
   <section id="result">
-    <div class="sec-head"><span class="sec-no">叁</span><h2>结果：91% 台阶上的诚实数字</h2></div>
+    <div class="sec-head"><span class="sec-no">叁</span><h2>结果：89% 台阶上的诚实数字</h2></div>
     <p class="sec-intro">特征选择只用训练集做「按篇分组」的 5 折交叉验证，选出主方案后，测试集只报告一次。</p>
 
     <div class="card">
@@ -381,9 +541,17 @@
         <button class="fbtn" data-f="band">仅边界带 |P−0.5|&lt;0.15</button>
         <button class="fbtn" data-f="wang">真实=汪曾祺</button>
         <button class="fbtn" data-f="li">真实=李娟</button>
-        <input id="searchBox" placeholder="搜索段落文字…">
+        <input id="searchBox" type="search" aria-label="搜索段落或篇名" placeholder="搜索段落或篇名…">
+        <select id="sortSelect" aria-label="排序方式">
+          <option value="original">按原顺序</option>
+          <option value="uncertain">最接近邊界</option>
+          <option value="li">最像李娟</option>
+          <option value="wang">最像汪曾祺</option>
+          <option value="work">按篇名</option>
+        </select>
       </div>
-      <table class="browse" id="browseTable"></table>
+      <p class="browse-meta" id="browseCount" aria-live="polite"></p>
+      <div class="table-scroll"><table class="browse" id="browseTable"></table></div>
       <button class="more-btn hidden" id="moreBtn">载入更多 ↓</button>
     </div>
   </section>
@@ -418,13 +586,14 @@ const pct = (x, d=1) => (x*100).toFixed(d) + "%";
   const m = D.metrics;
   $("navAcc").textContent = "测试集 " + pct(m.primary.accuracy);
   const cards = [
-    ["段落级", pct(m.primary.accuracy), "green"],
-    ["文章级（投票）", pct(m.work_level_accuracy), "green"],
-    ["语料 " + (m.n_train + m.n_test) + " 段", `训练 ${m.n_train} / 测试 ${m.n_test}`, ""],
-    ["误判 " + m.errors_total + " 段", "全部在边界带内", "orange"],
+    ["段落级准确率", pct(m.primary.accuracy), "green", ""],
+    ["文章级投票准确率", pct(m.work_level_accuracy), "green", ""],
+    ["语料规模", (m.n_train + m.n_test).toLocaleString(), "", `训练 ${m.n_train} · 测试 ${m.n_test}`],
+    ["误判段落", String(m.errors_total), "orange", "全部落在边界带"],
   ];
-  $("heroStats").innerHTML = cards.map(([a,b,c]) =>
-    `<div class="stat ${c}"><div class="num">${b}</div><div class="lab">${a}</div></div>`).join("");
+  const targets = ["#result", "#result", "#corpus", "#errors"];
+  $("heroStats").innerHTML = cards.map(([label,value,color,note], i) =>
+    `<a class="stat ${color}" href="${targets[i]}" aria-label="${label}：${value}"><div class="num">${value}</div><div class="lab">${label}<small>${note}</small></div></a>`).join("");
 }
 
 /* ================= SVG 工具 ================= */
@@ -704,33 +873,42 @@ function svgChart(w, h) {
 
 /* ================= 逐段浏览 ================= */
 {
-  const state = {filter: "all", q: "", shown: 0};
+  const state = {filter: "all", q: "", sort: "original", shown: 0};
   const PAGE = 40;
   const btns = document.querySelectorAll(".fbtn");
   btns.forEach(b => b.onclick = () => {
     btns.forEach(x => x.classList.remove("active")); b.classList.add("active");
+    btns.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     state.filter = b.dataset.f; state.shown = 0; render();
   });
-  $("searchBox").oninput = (e) => { state.q = e.target.value.trim(); state.shown = 0; render(); };
+  btns.forEach(b => b.setAttribute("aria-pressed", String(b.classList.contains("active"))));
+  $("searchBox").oninput = (e) => { state.q = e.target.value.trim().toLocaleLowerCase(); state.shown = 0; render(); };
+  $("sortSelect").onchange = (e) => { state.sort = e.target.value; state.shown = 0; render(); };
 
   function filtered() {
-    return D.test.filter(r => {
+    const rows = D.test.filter(r => {
       if (state.filter === "err" && r.correct) return false;
       if (state.filter === "band" && Math.abs(r.p_lijuan - 0.5) >= 0.15) return false;
       if (state.filter === "wang" && r.author !== "汪曾祺") return false;
       if (state.filter === "li" && r.author !== "李娟") return false;
-      if (state.q && !r.text.includes(state.q)) return false;
+      if (state.q && !`${r.text} ${r.work||""} ${r.author} ${r.pred}`.toLocaleLowerCase().includes(state.q)) return false;
       return true;
     });
+    if (state.sort === "uncertain") rows.sort((a,b) => Math.abs(a.p_lijuan-.5) - Math.abs(b.p_lijuan-.5));
+    if (state.sort === "li") rows.sort((a,b) => b.p_lijuan - a.p_lijuan);
+    if (state.sort === "wang") rows.sort((a,b) => a.p_lijuan - b.p_lijuan);
+    if (state.sort === "work") rows.sort((a,b) => (a.work||"").localeCompare(b.work||"", "zh-CN"));
+    return rows;
   }
   function render() {
     const rows = filtered();
     const show = rows.slice(0, state.shown + PAGE);
+    $("browseCount").textContent = `符合條件 ${rows.length} 段 · 目前顯示 ${Math.min(show.length, rows.length)} 段 · 點擊列或按 Enter 展開原文`;
     $("browseTable").innerHTML =
       `<tr><th style="width:56%">段落（点击展开全文）</th><th>真实</th><th>预测</th><th>P(李娟)</th><th>出处</th></tr>` +
       show.map((r, i) => {
         const band = Math.abs(r.p_lijuan - 0.5) < 0.15;
-        return `<tr class="row" data-i="${i}">
+        return `<tr class="row" data-i="${i}" tabindex="0" aria-expanded="false" aria-label="${esc(r.work||"测试段落")}，真实作者${esc(r.author)}，预测${esc(r.pred)}">
           <td class="ptext">${esc(r.text.slice(0, 60))}…</td>
           <td><span class="tag ${r.author==="李娟"?"li":"wang"}">${r.author}</span></td>
           <td><span class="tag ${r.pred==="李娟"?"li":"wang"}">${r.pred}</span></td>
@@ -739,7 +917,18 @@ function svgChart(w, h) {
         <tr class="hidden" id="bx${i}"><td colspan="5"><div class="detail">${esc(r.text)}</div></td></tr>`;
       }).join("") || `<tr><td colspan="5" style="color:var(--soft);text-align:center;padding:20px">没有匹配的段落</td></tr>`;
     $("browseTable").querySelectorAll("tr.row").forEach(tr => {
-      tr.onclick = () => $("bx" + tr.dataset.i).classList.toggle("hidden");
+      const toggleDetail = () => {
+        const detail = $("bx" + tr.dataset.i);
+        const expanded = detail.classList.toggle("hidden") === false;
+        tr.setAttribute("aria-expanded", String(expanded));
+      };
+      tr.onclick = toggleDetail;
+      tr.onkeydown = (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          toggleDetail();
+        }
+      };
     });
     const mb = $("moreBtn");
     mb.classList.toggle("hidden", show.length >= rows.length);
@@ -763,6 +952,27 @@ function svgChart(w, h) {
   ];
   $("aboutTable").innerHTML = rows.map(([k, v]) =>
     `<tr><th style="width:96px;vertical-align:top">${k}</th><td>${v}</td></tr>`).join("");
+}
+
+/* Keep the current chapter visible in the long-page navigation. */
+{
+  const links = [...document.querySelectorAll('nav a[href^="#"]')];
+  const sections = links.map(link => document.querySelector(link.getAttribute("href"))).filter(Boolean);
+  const initialTarget = location.hash ? links.find(link => link.getAttribute("href") === location.hash) : links[0];
+  initialTarget?.setAttribute("aria-current", "location");
+  const observer = new IntersectionObserver(entries => {
+    const active = entries.filter(entry => entry.isIntersecting)
+      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    if (!active) return;
+    links.forEach(link => {
+      if (link.getAttribute("href") === `#${active.target.id}`) {
+        link.setAttribute("aria-current", "location");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+  }, {rootMargin: "-20% 0px -65% 0px", threshold: [0, 0.1, 0.35]});
+  sections.forEach(section => observer.observe(section));
 }
 </script>
 </body>

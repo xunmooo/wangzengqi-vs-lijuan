@@ -155,20 +155,23 @@ def main() -> None:
                  columns=[f"预测_{l}" for l in LABELS]).to_csv(
         OUT / "confusion_matrix.csv", encoding="utf-8-sig")
 
+    # 与其他报告口径一致：标题使用四位舍入后的准确率
+    acc_display = round(accuracy_score(y_test, pred), 4)
+
     report = classification_report(y_test, pred, labels=LABELS, digits=4)
     (OUT / "classification_report.txt").write_text(report, encoding="utf-8")
 
     # 混淆矩阵图
     fig, ax = plt.subplots(figsize=(4.6, 4.0), dpi=150)
     im = ax.imshow(cm, cmap="Blues")
-    ax.set_xticks([0, 1], [f"预测:{l}" for l in LABELS])
-    ax.set_yticks([0, 1], [f"真实:{l}" for l in LABELS])
+    ax.set_xticks([0, 1], [f"預測:{l}" for l in LABELS])
+    ax.set_yticks([0, 1], [f"真實:{l}" for l in LABELS])
     thr = cm.max() / 2
     for i in range(2):
         for j in range(2):
             ax.text(j, i, str(cm[i, j]), ha="center", va="center",
                     color="white" if cm[i, j] > thr else "black", fontsize=14)
-    ax.set_title(f"测试集混淆矩阵（准确率 {accuracy_score(y_test, pred):.1%}）")
+    ax.set_title(f"測試集混淆矩陣（準確率 {accuracy_score(y_test, pred):.1%}）")
     fig.colorbar(im, shrink=0.8)
     fig.tight_layout()
     fig.savefig(OUT / "confusion_matrix.png")
@@ -233,19 +236,19 @@ def main() -> None:
     x = np.arange(len(kinds))
     fig, ax = plt.subplots(figsize=(6.4, 3.8), dpi=150)
     ax.bar(x - 0.18, cv_mean, 0.34, yerr=cv_std, capsize=3,
-           label="训练集分组 CV", color="#6b7d5a")
-    ax.bar(x + 0.18, test_acc, 0.34, label="测试集", color="#b0653f")
-    ax.set_xticks(x, ["字符TF-IDF\n(主方案)", "最高频200词", "词级TF-IDF"])
+           label="訓練集分組 CV", color="#6b7d5a")
+    ax.bar(x + 0.18, test_acc, 0.34, label="測試集", color="#b0653f")
+    ax.set_xticks(x, ["字符TF-IDF\n（主方案）", "最高頻200詞", "詞級TF-IDF"])
     ax.set_ylim(0.5, 1.02)
     ax.axhline(0.5, color="#999", lw=0.8, ls="--")
-    ax.text(0.02, 0.505, "随机基线 50%", fontsize=8, color="#999",
+    ax.text(0.02, 0.505, "隨機基線 50%", fontsize=8, color="#999",
             ha="left", transform=ax.get_yaxis_transform())
     for xi, v, s in zip(x - 0.18, cv_mean, cv_std):
         ax.text(xi, v + s + 0.012, f"{v:.1%}", ha="center", fontsize=8.5)
     for xi, v in zip(x + 0.18, test_acc):
         ax.text(xi, v + 0.012, f"{v:.1%}", ha="center", fontsize=8.5)
-    ax.set_ylabel("准确率")
-    ax.set_title("特征方案对比：交叉验证与测试集", loc="left")
+    ax.set_ylabel("準確率")
+    ax.set_title("特徵方案對比：交叉驗證與測試集", loc="left")
     ax.legend(loc="lower right", bbox_to_anchor=(1.0, 1.005), ncol=2,
               fontsize=9, frameon=False)
     fig.tight_layout()
@@ -257,16 +260,16 @@ def main() -> None:
     bad = test_pred[test_pred["correct"] == 0]["p_lijuan"]
     bins = np.linspace(0, 1, 25)
     ax.hist(ok, bins=bins, color="#9db28a", alpha=0.85,
-            label=f"判对 ({len(ok)} 段)")
+            label=f"判對 ({len(ok)} 段)")
     ax.hist(bad, bins=bins, color="#c94f4f", alpha=0.9,
-            label=f"误判 ({len(bad)} 段)")
+            label=f"誤判 ({len(bad)} 段)")
     ax.axvline(0.5, color="#666", lw=1)
     ax.axvspan(0.35, 0.65, color="#f4d35e", alpha=0.25)
-    ax.text(0.5, ax.get_ylim()[1] * 0.95, "边界带 |P−0.5|<0.15",
+    ax.text(0.5, ax.get_ylim()[1] * 0.95, "邊界帶 |P−0.5|<0.15",
             ha="center", fontsize=9, color="#8a6d1a")
-    ax.set_xlabel("P(李娟)")
-    ax.set_ylabel("段落数")
-    ax.set_title("测试集置信度分布：所有误判都落在边界带")
+    ax.set_xlabel("P（李娟）")
+    ax.set_ylabel("段落數")
+    ax.set_title("測試集置信度分布：所有誤判都落在邊界帶")
     ax.legend(fontsize=9)
     fig.tight_layout()
     fig.savefig(OUT / "confidence_histogram.png")
@@ -280,8 +283,8 @@ def main() -> None:
     ax.barh(range(len(sel)), sel["coef"], color=colors)
     ax.set_yticks(range(len(sel)), sel["feature"], fontsize=9)
     ax.axvline(0, color="#666", lw=0.8)
-    ax.set_xlabel("逻辑回归系数（>0 推向李娟，<0 推向汪曾祺）")
-    ax.set_title("区分两位作家最有力的特征（字符 n-gram）")
+    ax.set_xlabel("邏輯回歸係數（>0 推向李娟，<0 推向汪曾祺）")
+    ax.set_title("區分兩位作家最有力的特徵（字符 n-gram）")
     fig.tight_layout()
     fig.savefig(OUT / "top_features.png")
 

@@ -21,19 +21,75 @@ REPORT_PDF = PROJECT / "report.pdf"
 
 CSS = """
 @page { margin: 22mm 20mm; @bottom-center { content: counter(page); font-size: 10px; color: #888; } }
-body { font-family: "Source Han Serif SC", "Noto Serif CJK SC", "SimSun", serif;
-       font-size: 11.5pt; line-height: 1.85; color: #1a1a1a; max-width: 760px; margin: 0 auto; }
-h1 { font-size: 20pt; line-height: 1.4; margin: 0 0 6px; text-align: center; }
-h2 { font-size: 14.5pt; margin: 28px 0 10px; border-bottom: 1.5px solid #999; padding-bottom: 4px; }
-h3 { font-size: 12.5pt; margin: 18px 0 8px; }
-p { margin: 8px 0; text-align: justify; }
-table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 10.5pt; }
-th, td { border: 1px solid #bbb; padding: 5px 9px; text-align: left; }
-th { background: #f0ede6; }
-blockquote { border-left: 3px solid #bbb; margin: 10px 0; padding: 2px 14px; color: #555; font-size: 10.5pt; }
-code { font-family: Consolas, monospace; background: #f4f2ec; padding: 1px 4px; font-size: 10pt; }
+body {
+  font-family: "STKaiti", "华文楷体", "KaiTi", "Microsoft YaHei", serif;
+  font-size: 11.5pt;
+  line-height: 1.9;
+  color: #1a1a1a;
+  max-width: 760px;
+  margin: 0 auto;
+  font-weight: 500;
+}
+h1 {
+  font-size: 20pt;
+  line-height: 1.4;
+  margin: 0 0 8px;
+  text-align: center;
+  font-weight: 700;
+}
+h2 {
+  font-size: 14.5pt;
+  margin: 28px 0 10px;
+  border-bottom: 1.5px solid #9a9a9a;
+  padding-bottom: 4px;
+  font-weight: 700;
+}
+h3 {
+  font-size: 12.5pt;
+  margin: 18px 0 8px;
+  font-weight: 700;
+}
+p {
+  margin: 8px 0;
+  text-align: justify;
+  font-weight: 500;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0;
+  font-size: 10.5pt;
+}
+th, td {
+  border: 1px solid #bbb;
+  padding: 5px 9px;
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: #f0ede6;
+  font-weight: 700;
+}
+blockquote {
+  border-left: 3px solid #bbb;
+  margin: 10px 0;
+  padding: 2px 14px;
+  color: #555;
+  font-size: 10.5pt;
+}
+code {
+  font-family: Consolas, "Courier New", monospace;
+  background: #f4f2ec;
+  padding: 1px 4px;
+  font-size: 10pt;
+}
 strong { font-weight: 700; }
-hr { border: none; border-top: 1px solid #ccc; margin: 20px 0; }
+img { max-width: 100%; height: auto; display: block; margin: 12px auto; }
+hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 20px 0;
+}
 """
 
 
