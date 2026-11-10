@@ -171,7 +171,7 @@ def main() -> None:
         for j in range(2):
             ax.text(j, i, str(cm[i, j]), ha="center", va="center",
                     color="white" if cm[i, j] > thr else "black", fontsize=14)
-    ax.set_title(f"測試集混淆矩陣（準確率 {accuracy_score(y_test, pred):.1%}）")
+    ax.set_title(f"測試集混淆矩陣（準確率 {acc_display:.1%}）")
     fig.colorbar(im, shrink=0.8)
     fig.tight_layout()
     fig.savefig(OUT / "confusion_matrix.png")
